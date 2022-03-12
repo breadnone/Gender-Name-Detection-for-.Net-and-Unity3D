@@ -16,7 +16,8 @@ There are two approaches, one with commonal patterns by letter shifting, the oth
 Gender name detection is very useful for NLPs, visual novels, chatbots etc.
 While this same module is meant to be used for a conversational AI in .Net and Unity3D, it is not by any means an AI. The goal of this module is to be paired with ML.NET. Although you can use it as standalone with no problem.   
   
-Note : for Unity3D copy the script into Assets/Scripts.  
+Note 1: for Unity3D copy the script into Assets/Scripts.  
+Note 2: Unity3D 2021.4.x or above  
   
 # Limitations  
 Only supports English-like names (US/UK).  
