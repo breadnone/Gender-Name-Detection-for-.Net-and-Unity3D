@@ -7,7 +7,7 @@ Add VGender as namespace.
 
             string stringName = "Benjamin";
             var t = VGenderName.NameGender(stringName);
-            Console.WriteLine("StringResult : " + t.value + " Female IntValue : " + t.femaleVal " Male IntValue : " + t.maleVal);
+            Debug.Log("StringResult : " + t.value + " Female IntValue : " + t.femaleVal " Male IntValue : " + t.maleVal);
 
 
 # Method  
