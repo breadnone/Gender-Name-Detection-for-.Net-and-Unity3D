@@ -1,4 +1,4 @@
-# Gender Name Detection for .Net and Unity3D
+# Gender Name Detection for Unity3D
 A gender detection based on person's name. Currently only supports english-like names.  
 
   
@@ -18,6 +18,7 @@ While this same module is meant to be used for a conversational AI in .Net and U
   
 Note 1: for Unity3D copy the script into Assets/Scripts.  
 Note 2: Unity3D 2021.4.x or above  
+Note 3: Net Standard 2.1 selected in project settings.  
   
 # Limitations  
 Only supports English-like names (US/UK).  
