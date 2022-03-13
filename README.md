@@ -25,7 +25,12 @@ There are common patterns hardcoded mostly for fallback if it returns equals. Th
                 };
 ```
 Gender name detection is very useful for NLPs, NER, games such as visual novels(for gender pronouns detection), chatbots etc.
-While this same module is meant to be used for a conversational AI in .Net and Unity3D, it is not by any means an AI. The goal of this module is to be paired with ML.NET. Although you can use it as standalone with no problem.   
+While this same module is meant to be used for a conversational AI in .Net and Unity3D, it is not by any means a AI. The goal of this module is to be paired with ML.NET. Although you can use it as standalone with no problem.   
+  
+# Feed/Make it Learn New Common Names  
+You can make it learn other gender name detection from other languages (KOR, JPN, AUS, FIN, anything you want to add!) by adding more names in :  
+[Female Names Dictionary](https://github.com/breadnone/Gender-Name-Detection-for-.Net-and-Unity3D/blob/main/Velvie_AI/velvie-genderName/commonFemaleNames.txt)  
+[Male Names Dictionary](https://github.com/breadnone/Gender-Name-Detection-for-.Net-and-Unity3D/blob/main/Velvie_AI/velvie-genderName/commonMaleNames.txt)  
   
 Note 1: for Unity3D copy the script into Assets/Scripts.  
 Note 2: Unity3D 2021.4.x or above  
