@@ -11,15 +11,16 @@ namespace VGender
     {
         private static string femalefileName = "commonFemaleNames.txt";
         private static string malefileName = "commonMaleNames.txt";
+        private static StringComparison sc = StringComparison.OrdinalIgnoreCase;
+        private static string path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
 
         //First four characters
-        public static int FirstFour(string str, bool isMale)
+        public static double FirstFour(string str, bool isMale)
         {
             if(str.Length < 5)
                 return 0;
 
-            int val = 0;
-            var path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
+            double val = 0;
 
             //2 is the upper bound, setting this higher would gain accuracy 
             //but too many abstraction that can lead to false information
@@ -42,9 +43,9 @@ namespace VGender
                         string firstFour = e[0..5]; //skip first letter
                         string comparer = str[0..5];
                         
-                        if(firstFour.Equals(comparer, StringComparison.OrdinalIgnoreCase))
+                        if(firstFour.Equals(comparer, sc))
                         {
-                            val++;
+                            val += 0.2;
                             Debug.Log("simillar firstFour pattern : " + firstFour + " : " + isMale);
                         }
                     }
@@ -56,13 +57,12 @@ namespace VGender
                 Debug.Log("female common : " + val);
             return val;
         }
-        public static int SecondFour(string str, bool isMale)
+        public static double SecondFour(string str, bool isMale)
         {
             if(str.Length < 6)
                 return 0;
 
-            int val = 0;
-            var path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
+            double val = 0;
 
             //2 is the upper bound, setting this higher would gain accuracy 
             //but too many abstraction that can lead to false information
@@ -85,9 +85,9 @@ namespace VGender
                         string firstFour = e[2..6]; //skip first letter
                         string comparer = str[2..6];
                         
-                        if(firstFour.Equals(comparer, StringComparison.OrdinalIgnoreCase))
+                        if(firstFour.Equals(comparer, sc))
                         {
-                            val++;
+                            val += 0.2;
                             Debug.Log("simillar firstFour pattern : " + firstFour + " : " + isMale);
                         }
                     }
@@ -100,12 +100,12 @@ namespace VGender
             return val;
         }
         //Last four character
-        public static int LastFour(string str, bool isMale)
+        public static double LastFour(string str, bool isMale)
         {
             if(str.Length < 5)
                 return 0;
 
-            int val = 0;
+            double val = 0;
             var path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
 
             //2 is the upper bound, setting this higher would gain accuracy 
@@ -128,9 +128,9 @@ namespace VGender
                         string lastFour = e.Substring(e.Length - 3);
                         string comparer = str.Substring(str.Length - 3);
 
-                        if(lastFour.Equals(comparer, StringComparison.OrdinalIgnoreCase))
+                        if(lastFour.Equals(comparer, sc))
                         {
-                            val++;
+                            val += 0.2;
                             Debug.Log("simillar lastFour pattern : " + lastFour + " : " + isMale);
                         }
                     }
@@ -143,13 +143,12 @@ namespace VGender
                 Debug.Log("female common : " + val);
             return val;
         }
-        public static int MiddleFour(string str, bool isMale)
+        public static double MiddleFour(string str, bool isMale)
         {
             if(str.Length < 5)
                 return 0;
 
-            int val = 0;
-            var path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
+            double val = 0;
 
             //2 is the upper bound, setting this higher would gain accuracy 
             //but too many abstraction that can lead to false information
@@ -174,9 +173,9 @@ namespace VGender
                         string lastFour = e.Substring(2);
                         string comparer = str.Substring(2);
 
-                        if(lastFour.Equals(comparer, StringComparison.OrdinalIgnoreCase))
+                        if(lastFour.Equals(comparer, sc))
                         {
-                            val++;
+                            val += 0.2;
                             Debug.Log("simillar midFour pattern : " + lastFour + " : " + isMale);
                         }
                     }
@@ -189,10 +188,9 @@ namespace VGender
                 Debug.Log("female common : " + val);
             return val;
         }
-        public static int ExactName(string str, bool isMale)
+        public static double ShiftMatching(string str, bool isMale, int bounds)
         {
-            int val = 0;
-            var path = Application.dataPath + "/Scripts/Velvie_AI/velvie-genderName/";
+            double val = 0;            
 
             //2 is the upper bound, setting this higher would gain accuracy 
             //but too many abstraction that can lead to false information
@@ -209,21 +207,36 @@ namespace VGender
             {
                 foreach (var e in File.ReadLines(path))
                 {                    
-                    if (!String.IsNullOrEmpty(e) && e.Length == str.Length)
+                    if (!String.IsNullOrEmpty(e) && str.Length >= e.Length)
                     {
-                        if(e.Equals(str, StringComparison.OrdinalIgnoreCase))
+                        for(int i = 0; i < e.Length; i++)
                         {
-                            val = 100;
-                            Debug.Log("simillar exact match : " + e + " : " + isMale);
+                            if(i + bounds <= e.Length - 1 && e[i] == str[i] && 
+                                e[i + (bounds - 2)] == str[i + (bounds - 2)] && 
+                                e[i + (bounds - 1)] == str[i + (bounds - 1)] && 
+                                e[i + bounds] == str[i + bounds])
+                            {
+                                val += 0.2;
+                                Debug.Log("simillar +3 sequence match : " + e + " : " + isMale);
+                            }
+                            if(i + (bounds + 1) <= e.Length - 1 && e[i+bounds] == str[i+bounds] && 
+                                e[i] == str[i] && e[i + (bounds + 1)] == str[i + (bounds + 1)])
+                            {
+                                val += 0.2;
+                                Debug.Log("simillar shift +3 skip match : " + e + " : " + isMale);
+                            }
                         }
                     }
+
+                    if(str.Equals(e, sc))
+                        val += 10;
                 }
             }
 
             if(isMale)
-                Debug.Log("male common : " + val);
+                Debug.Log("male common : " + (double)val / (double)1000);
             else
-                Debug.Log("female common : " + val);
+                Debug.Log("female common : " + (double)val / (double)1000);
             return val;
         }
     }

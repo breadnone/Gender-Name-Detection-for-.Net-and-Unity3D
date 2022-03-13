@@ -10,10 +10,10 @@ namespace VGender
     {
         // Start is called before the first frame update
         private static StringComparison sc = StringComparison.OrdinalIgnoreCase;
-        public static (int maleVal, int femaleVal, string value) NameGender(string inputWrd)
+        public static (double maleVal, double femaleVal, string value) NameGender(string inputWrd)
         {
             var t = string.Empty;
-            (int maleVal, int femaleVal, string value) finalVal = (0, 0, string.Empty);
+            (double maleVal, double femaleVal, string value) finalVal = (0.0, 0.0, string.Empty);
 
             if (inputWrd.Length >= 4)
             {
@@ -52,9 +52,7 @@ namespace VGender
                 string startChar = wc[0].ToString().ToLower();
                 string lastChar = wc[wc.Length - 1].ToString().ToLower();
 
-                int female = 0; int male = 0;
-
-                bool ll = wc.Contains("ll"); bool nn = wc.Contains("nn"); bool tte = wc.Contains("tte");
+                double female = 0; double male = 0;
 
                 female += CommonNameParser.FirstFour(inputWrd, false);
                 male += CommonNameParser.FirstFour(inputWrd, true);
@@ -64,34 +62,14 @@ namespace VGender
                 male += CommonNameParser.MiddleFour(inputWrd, true);
                 female += CommonNameParser.SecondFour(inputWrd, false);
                 male += CommonNameParser.SecondFour(inputWrd, true);
-                female += CommonNameParser.ExactName(inputWrd, false);
-                male += CommonNameParser.ExactName(inputWrd, true);
+                female += CommonNameParser.ShiftMatching(inputWrd, false, 3);
+                male += CommonNameParser.ShiftMatching(inputWrd, true, 3);
 
                 //Vowels counter
-                if (aCount > 1 && iCount > 0) female++;
-                if (aCount > 0 && iCount > 0 && eCount > 0) female++;
-                if (aCount > 0 && iCount == 0 && eCount == 0) male++;
-                if (aCount > 1 && eCount > 1) female++;
-
-                //starting character generalization
-                //Female
-                if (wc.EndsWith("a")) female++;
-                if (wc.EndsWith("e")) female++;
-                if (wc.EndsWith("i")) female++;
-
-                if (nn && wc.EndsWith("a")) female++;
-                if (nn && wc.EndsWith("e")) female++;
-                if (ll && wc.EndsWith("a")) female++;
-                if (nn && wc.EndsWith("ie")) female++;
-                if (ll && wc.EndsWith("e")) female++;
-                if (nn && lastThree == "nie") female++;
-                if (ll && lastThree == "nie") female++;
-                if (nn && lastTwo == "ia") female++;
-                if (nn && lastThree == "nia") female++;
-                if (ll && lastThree == "nia") female++;
-                if (tte) female++;
-
-                if (firstTwo != "be" && lastThree == "min") female++;
+                if (aCount > 1 && iCount > 0) female += 0.2;
+                if (aCount > 0 && iCount > 0 && eCount > 0) female += 0.2;
+                if (aCount > 0 && iCount == 0 && eCount == 0)male += 0.2;
+                if (aCount > 1 && eCount > 1) female += 0.2;
 
                 //Common pattern matching
                 //FEMALE common lastThree characters
@@ -142,13 +120,13 @@ namespace VGender
                     x == "ney" || x == "owe" || x == "len" || x == "eah" ||
                     x == "iah" || x == "yla" || x == "nda" || x == "rly" ||
                     x == "lah" || x == "tzi" || x == "ata" || x == "yna" ||
-                    x == "lda" || x == "ber" || x == "bby" || x == "lei" ||
+                    x == "lda" || x == "ber" || x == "lei" || x == "vay" ||
                     x == "rai" || x == "loh" || x == "nca" || x == "ica" ||
                     x == "era" || x == "uri" || x == "ena" || x == "aly" ||
                     x == "nza" || x == "rmi" || x == "isa" || x == "nri" ||
                     x == "rai" || x == "idi" || x == "ima" || x == "ynn" ||
-                    x == "ssa" || x == "vay" ||
-                    x == "oma" => female += 2,
+                    x == "ssa" || 
+                    x == "oma" => female += 0.4,
                     _ => female += 0
                 };
 
@@ -156,42 +134,12 @@ namespace VGender
                 //MALE common lastThree characters
 
                 if (startChar == "a" && wc.EndsWith("n"))
-                    male++;
-
-                male = (wc) switch
-                {
-                    var x when
-                    x.EndsWith("o") ||
-                    x.EndsWith("k") ||
-                    x.EndsWith("s") ||
-                    x.EndsWith("y") ||
-                    x.EndsWith("g") => male++,
-                    _ => male += 0
-                };
-
-                if (startChar == "e" && wc.EndsWith("c")) male++;
-
-                if (!nn && wc.EndsWith("a")) male++;
-                if (!nn && wc.EndsWith("e")) male++;
-                if (ll && wc.EndsWith("n")) male++;
-                if (!nn && lastTwo == "ie") male++;
-                if (!nn && lastThree == "nie") male++;
-                if (!ll && lastThree == "nie") male++;
-                if (!nn && lastTwo == "ia") male++;
-                if (!nn && lastThree == "nia") male++;
-                if (!ll && lastThree == "nia") male++;
-                if (!ll && lastThree == "ian") male++;
-                if (!ll && lastTwo == "tt") male++;
-
-                if (firstThree != "jas" && lastThree == "min") male += 2;
-                if (startChar != "a" && lastThree == "son") male += 2;
-                if (startChar != "a" && lastThree == "nie") male += 2;
-                if (startChar != "g" && lastThree == "wen") male += 2;
+                    male += 0.2;
 
                 male = (lastThree) switch
                 {
                     var x when
-                    x == "elo" || x == "les" || x == "ino" ||
+                    x == "elo" || x == "les" || x == "ino" || x == "nho" ||
                     x == "xon" || x == "con" || x == "jon" || x == "moa" ||
                     x == "yan" || x == "ton" || x == "bon" || x == "gon" ||
                     x == "lmy" || x == "lmi" || x == "cka" || x == "uly" ||
@@ -243,38 +191,11 @@ namespace VGender
                     x == "arc" || x == "ran" || x == "hew" || x == "ark" ||
                     x == "yle" || x == "vin" || x == "aac" || x == "vin" ||
                     x == "ard" || x == "per" || x == "ony" || x == "iel" ||
-                    x == "der" => male += 2,
+                    x == "der" => male += 0.4,
                     _ => male += 0
                 };
 
-                male = (startChar, lastChar) switch
-                {
-                    var (x, z) when
-                    x == "n" && z == "h" || x == "l" && z == "m" ||
-                    x == "o" && z == "r" || x == "e" && z == "h" ||
-                    x == "w" && z == "m" || x == "j" && z == "s" ||
-                    x == "l" && z == "s" || x == "h" && z == "y" ||
-                    x == "d" && z == "l" || x == "j" && z == "b" ||
-                    x == "j" && z == "k" || x == "j" && z == "c" ||
-                    x == "b" && z == "n" || x == "m" && z == "n" ||
-                    x == "l" && z == "n" || x == "s" && z == "n" ||
-                    x == "j" && z == "n" || x == "c" && z == "n" ||
-                    x == "r" && z == "n" || x == "a" && z == "n" ||
-                    x == "e" && z == "n" || x == "g" && z == "n" ||
-                    x == "s" && z == "l" || x == "j" && z == "h" ||
-                    x == "d" && z == "d" || x == "i" && z == "c" ||
-                    x == "m" && z == "k" || x == "i" && z == "h" ||
-                    x == "c" && z == "b" || x == "e" && z == "l" ||
-                    x == "s" && z == "o" || x == "h" && z == "r" ||
-                    x == "n" && z == "s" || x == "s" && z == "s" ||
-                    x == "b" && z == "s" || x == "m" && z == "s" ||
-                    x == "t" && z == "s" || x == "e" && z == "s" ||
-                    x == "d" && z == "c" || x == "c" && z == "s" ||
-                    x == "a" && z == "m" || x == "e" && z == "t" ||
-                    x == "w" && z == "y" => male++,
-                    _ => male += 0
-                };
-
+                //Fallback
                 bool genderEqual = false;
 
                 if (female > male)
@@ -309,8 +230,8 @@ namespace VGender
 
                 //Debug.Log("Gender : " + t + " || " + "Male Value : " + male + " || " + "Female Value : " + female);
 
-                finalVal.femaleVal = female;
-                finalVal.maleVal = male;
+                finalVal.femaleVal = female / 100;
+                finalVal.maleVal = male / 100;
                 finalVal.value = t;
             }
             return finalVal;
