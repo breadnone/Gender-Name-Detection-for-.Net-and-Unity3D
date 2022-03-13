@@ -20,6 +20,8 @@ Note 1: for Unity3D copy the script into Assets/Scripts.
 Note 2: Unity3D 2021.4.x or above  
 Note 3: Net Standard 2.1 selected in project settings.  
   
+Note for .Net setup : Change the Application.Datapath with GetFolderPath method then remove all Unity's namespace and treat it as reqular c# classes (well, you know the drill)
+  
 # Limitations  
 Only supports English-like names (US/UK).  
 Doesn't support multiple words(first and last name). You must split it manually and make two instances (one for first name, other for last name) so it would work.
