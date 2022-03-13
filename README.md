@@ -25,6 +25,7 @@ There are common patterns hardcoded mostly for fallback if it returns equals. Th
                 };
 ```  
 # Tweaking Accuracies  
+NOTE: Adding custom bounds will require adjustment to length checks!
 ```
                 //set this higher/lower depends on country cultures. 
                 //US/UK best with value of 3, other countries/cultures may need to tweak this value lower/higher.  
