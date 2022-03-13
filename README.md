@@ -23,6 +23,16 @@ There are common patterns hardcoded mostly for fallback if it returns equals. Th
                     x == "yan" || x == "ton" || x == "bon" || x == "gon" ||
                     ...
                 };
+```  
+# Tweaking Accuracies  
+```
+                //set this higher/lower depends on country cultures. 
+                //US/UK best with value of 3, other countries/cultures may need to tweak this value lower/higher.  
+                
+                int bounds = 3; 
+                
+                female += CommonNameParser.ShiftMatching(inputWrd, false, bounds);
+                male += CommonNameParser.ShiftMatching(inputWrd, true, bounds);
 ```
 Gender name detection is very useful for NLPs, NER, games such as visual novels(for gender pronouns detection), chatbots etc.
 While this same module is meant to be used for a conversational AI in .Net and Unity3D, it is not by any means a AI. The goal of this module is to be paired with ML.NET. Although you can use it as standalone with no problem.   
