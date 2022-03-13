@@ -12,8 +12,19 @@ Add VGender as namespace.
 
 # Method  
 There are two approaches, one with commonal patterns by letter shifting, the other is by taking from corpus data.  
-
-Gender name detection is very useful for NLPs, visual novels, chatbots etc.
+  
+There are common patterns hardcoded mostly for fallback if it returns equals. This should affect a little other gender name detection from other cultures (JPN, KOR, etc..).  
+```
+                male = (lastThree) switch //common last three characters
+                {
+                    var x when
+                    x == "elo" || x == "les" || x == "ino" || x == "nho" ||
+                    x == "xon" || x == "con" || x == "jon" || x == "moa" ||
+                    x == "yan" || x == "ton" || x == "bon" || x == "gon" ||
+                    ...
+                };
+```
+Gender name detection is very useful for NLPs, NER, games such as visual novels(for gender pronouns detection), chatbots etc.
 While this same module is meant to be used for a conversational AI in .Net and Unity3D, it is not by any means an AI. The goal of this module is to be paired with ML.NET. Although you can use it as standalone with no problem.   
   
 Note 1: for Unity3D copy the script into Assets/Scripts.  
